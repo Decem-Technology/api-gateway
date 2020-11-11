@@ -1,0 +1,15 @@
+FROM golang:latest AS builder
+WORKDIR /go/src/
+# Download module
+COPY go.mod go.sum ./
+RUN go mod download -x
+# Build
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o micro main.go plugin.go
+
+FROM alpine:latest 
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=builder /go/src/micro .
+EXPOSE 8080
+ENTRYPOINT ["./micro", "api", "--namespace=${GATEWAY_NAMESPACE}.rest", "--cors-allowed-origins=*", "--enable_rpc=true", "--enable_cors=false", "--handler=web", "--address=0.0.0.0:8080"]
