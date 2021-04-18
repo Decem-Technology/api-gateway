@@ -14,4 +14,4 @@ WORKDIR /root/
 COPY --from=builder /go/src/micro .
 ENV MICRO_CLIENT=grpc MICRO_SERVER=grpc
 EXPOSE 8080
-ENTRYPOINT ["./micro", "api", "--namespace=${GATEWAY_NAMESPACE}.grpc", "--cors-allowed-methods=POST,GET,PUT,DELETE", "--cors-allowed-origins=*", "--enable_rpc=true", "--enable_cors=true", "--address=0.0.0.0:8080"]
+ENTRYPOINT ["./micro", "api", "--namespace=platflo.grpc", "--cors-allowed-methods=POST,GET,PUT,DELETE", "--cors-allowed-origins=*", "--enable_rpc=true", "--enable_cors=true", "--address=0.0.0.0:8080"]
